@@ -1,0 +1,23 @@
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: keycloak
+spec:
+  instances: 1
+  db:
+    vendor: postgres
+    host: kcpostgres
+    usernameSecret:
+      key: database-user
+      name: kcpostgres
+    passwordSecret:
+      key: database-password
+      name: kcpostgres
+    database: kcdatabase
+  hostname:
+    hostname: keycloak-$(oc project -q).${CLUSTER_NAME}
+  additionalOptions:
+    - name: proxy
+      value: edge
+  image: default-route-openshift-image-registry.${CLUSTER_NAME}/$(oc project -q)/myrhbk:latest
+
