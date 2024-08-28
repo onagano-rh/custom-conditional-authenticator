@@ -38,7 +38,7 @@ $KC_HOME/bin/kc.sh start-dev --log-level=com.example:all
 
 ```
 oc new-app --template=postgresql-persistent \
-   -p POSTGRESQL_VERSION=13-el8 \
+   -p POSTGRESQL_VERSION=15-el9 \
    -p DATABASE_SERVICE_NAME=kcpostgres \
    -p POSTGRESQL_USER=kcusername \
    -p POSTGRESQL_PASSWORD=kcpassword \
@@ -46,7 +46,7 @@ oc new-app --template=postgresql-persistent \
 ```
 
 その後に作成したDBを参照するようにKeycloak CRを作成する。
-以下はHTTPSをRouterで終端する`proxy=edge`の例である。
+以下はHTTPSをRouterで終端するプロキシモードがedgeの例である。
 
 ```
 apiVersion: k8s.keycloak.org/v2alpha1
@@ -65,11 +65,19 @@ spec:
       key: database-password
       name: kcpostgres
     database: kcdatabase
+  http:
+    httpEnabled: true
+  proxy:
+    headers: xforwarded
   hostname:
     hostname: keycloak-$(oc project -q).${CLUSTER_NAME}
-  additionalOptions:
-    - name: proxy
-      value: edge
+  resources:
+    requests:
+      cpu: 2
+      memory: 1Gi
+    limits:
+      cpu: 2
+      memory: 1Gi
 ```
 
 これを `oc apply` で適用するが、`spec.hostname.hostname` はプロジェクト名やOpenShiftクラスタ名にあわせること。
@@ -115,5 +123,5 @@ Keycloak CRのその他の設定は一部無視されるので注意する。
   - [ConditionalUserAttributeValueFactory](https://github.com/keycloak/keycloak/blob/22.0.5/services/src/main/java/org/keycloak/authentication/authenticators/conditional/ConditionalUserAttributeValueFactory.java)
   - [ConditionalUserAttributeValue](https://github.com/keycloak/keycloak/blob/22.0.5/services/src/main/java/org/keycloak/authentication/authenticators/conditional/ConditionalUserAttributeValue.java)
 - [コミュニティ版のカスタムイメージ作成ガイド](https://www.keycloak.org/server/containers)
-- [RHBKのOperatorでカスタムイメージを使うための公式ドキュメント](https://access.redhat.com/documentation/en-us/red_hat_build_of_keycloak/22.0/html-single/operator_guide/index#customizing-keycloak-)
+- [RHBKのOperatorでカスタムイメージを使うための公式ドキュメント](https://docs.redhat.com/ja/documentation/red_hat_build_of_keycloak/24.0/html-single/operator_guide/index#customizing-keycloak-red-hat-build-of-keycloak-custom-image-with-the-operator)
 

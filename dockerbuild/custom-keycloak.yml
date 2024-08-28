@@ -14,10 +14,18 @@ spec:
       key: database-password
       name: kcpostgres
     database: kcdatabase
+  http:
+    httpEnabled: true
+  proxy:
+    headers: xforwarded
   hostname:
     hostname: keycloak-$(oc project -q).${CLUSTER_NAME}
-  additionalOptions:
-    - name: proxy
-      value: edge
+  resources:
+    requests:
+      cpu: 2
+      memory: 1Gi
+    limits:
+      cpu: 2
+      memory: 1Gi
   image: default-route-openshift-image-registry.${CLUSTER_NAME}/$(oc project -q)/myrhbk:latest
 
