@@ -2,11 +2,13 @@ package com.example.conditional;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 import org.jboss.logging.Logger;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.authenticators.conditional.ConditionalAuthenticator;
 import org.keycloak.connections.httpclient.HttpClientProvider;
+import org.keycloak.connections.infinispan.InfinispanConnectionProvider;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
@@ -69,6 +71,10 @@ public class CustomConditionalAuthenticator implements ConditionalAuthenticator 
         // Use User Session Note to pass around small info.
         context.getAuthenticationSession().setUserSessionNote("hoge", "hoge value");  // usually set in another plugin.
         LOG.tracef("Got note for hoge: %s", context.getAuthenticationSession().getUserSessionNotes().get("hoge"));
+
+        // Get authenticationSession cache
+        Map<String, Object> authCache = context.getSession().getProvider(InfinispanConnectionProvider.class).getCache(InfinispanConnectionProvider.AUTHENTICATION_SESSIONS_CACHE_NAME);
+        LOG.tracef("size: %i" + authCache.size());
 
         return result;
     }
