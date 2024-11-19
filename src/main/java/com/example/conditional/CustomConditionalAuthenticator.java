@@ -53,7 +53,7 @@ public class CustomConditionalAuthenticator implements ConditionalAuthenticator 
 
         // You can get a preconfigured HttpClient instance which is no need to close (see JavaDoc).
         LOG.tracef("Got HttpClient: %s", context.getSession().getProvider(HttpClientProvider.class).getHttpClient());
-        
+
         // Or use convenience methods: postText(), get().
         try {
             int responseStatus = context.getSession().getProvider(HttpClientProvider.class)
@@ -75,6 +75,12 @@ public class CustomConditionalAuthenticator implements ConditionalAuthenticator 
         // Get authenticationSession cache
         Map<String, Object> authCache = context.getSession().getProvider(InfinispanConnectionProvider.class).getCache(InfinispanConnectionProvider.AUTHENTICATION_SESSIONS_CACHE_NAME);
         LOG.tracef("size: %i" + authCache.size());
+
+        // Modify theme properties. Refer by '${msg("hogeKey")}' in *.ftl files
+        String propKey = "hogeKey";
+        String propValue = "hoge value";
+        context.getSession().realms().saveLocalizationText(context.getRealm(), "en", propKey, propValue);
+        LOG.tracef("Set %s to %s", propKey, propValue);
 
         return result;
     }
