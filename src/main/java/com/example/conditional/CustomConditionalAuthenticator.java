@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
+import org.apache.http.client.HttpClient;
 import org.jboss.logging.Logger;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.authenticators.conditional.ConditionalAuthenticator;
@@ -52,16 +53,17 @@ public class CustomConditionalAuthenticator implements ConditionalAuthenticator 
             LOG.tracef("Got: %s, %s", k, mv));
 
         // You can get a preconfigured HttpClient instance which is no need to close (see JavaDoc).
-        LOG.tracef("Got HttpClient: %s", context.getSession().getProvider(HttpClientProvider.class).getHttpClient());
+        HttpClient httpClient = context.getSession().getProvider(HttpClientProvider.class).getHttpClient();
+        LOG.tracef("Got HttpClient: %s", httpClient);
 
         // Or use convenience methods: postText(), get().
         try {
             int responseStatus = context.getSession().getProvider(HttpClientProvider.class)
-                .postText("http://localhost:8080/", "dummy data");
+                .postText("http://localhost:8080/?hoge=hogevalue", "dummy data");
             LOG.tracef("POST response: %s", responseStatus);
 
             try (InputStream is = context.getSession().getProvider(HttpClientProvider.class)
-                    .get("http://localhost:8080/")) {
+                    .get("http://localhost:8080/?foo=foovalue")) {
                 LOG.tracef("GET response: %s", new String(is.readAllBytes()));
             }
         } catch (IOException e) {
