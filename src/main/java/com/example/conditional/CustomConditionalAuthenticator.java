@@ -8,6 +8,7 @@ import org.apache.http.client.HttpClient;
 import org.jboss.logging.Logger;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.authenticators.conditional.ConditionalAuthenticator;
+import org.keycloak.broker.provider.util.SimpleHttp;
 import org.keycloak.connections.httpclient.HttpClientProvider;
 import org.keycloak.connections.infinispan.InfinispanConnectionProvider;
 import org.keycloak.models.KeycloakSession;
@@ -66,6 +67,10 @@ public class CustomConditionalAuthenticator implements ConditionalAuthenticator 
                     .get("http://localhost:8080/?foo=foovalue")) {
                 LOG.tracef("GET response: %s", new String(is.readAllBytes()));
             }
+
+            // Example usage of SimpleHttp
+            LOG.tracef("GET by SimpleHttp: %s", SimpleHttp.doGet("https://httpbin.org/get", context.getSession()).asJson());
+
         } catch (IOException e) {
             throw new RuntimeException("Request failed", e);
         }

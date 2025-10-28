@@ -6,5 +6,7 @@ target
 .settings
 .classpath
 
+.metals
+
 dockerbuild/*.jar
 
