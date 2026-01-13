@@ -120,8 +120,8 @@ Keycloak CRのその他の設定は一部無視されるので注意する。
 # 参考
 
 - ユーザーの属性をチェックする `ConditionalAuthenticator` のデフォルト実装
-  - [ConditionalUserAttributeValueFactory](https://github.com/keycloak/keycloak/blob/22.0.5/services/src/main/java/org/keycloak/authentication/authenticators/conditional/ConditionalUserAttributeValueFactory.java)
-  - [ConditionalUserAttributeValue](https://github.com/keycloak/keycloak/blob/22.0.5/services/src/main/java/org/keycloak/authentication/authenticators/conditional/ConditionalUserAttributeValue.java)
+  - [ConditionalUserAttributeValueFactory](https://github.com/keycloak/keycloak/blob/26.4.7/services/src/main/java/org/keycloak/authentication/authenticators/conditional/ConditionalUserAttributeValueFactory.java)
+  - [ConditionalUserAttributeValue](https://github.com/keycloak/keycloak/blob/26.4.7/services/src/main/java/org/keycloak/authentication/authenticators/conditional/ConditionalUserAttributeValue.java)
 - [コミュニティ版のカスタムイメージ作成ガイド](https://www.keycloak.org/server/containers)
-- [RHBKのOperatorでカスタムイメージを使うための公式ドキュメント](https://docs.redhat.com/ja/documentation/red_hat_build_of_keycloak/24.0/html-single/operator_guide/index#customizing-keycloak-red-hat-build-of-keycloak-custom-image-with-the-operator)
+- [RHBKのOperatorでカスタムイメージを使うための公式ドキュメント](https://docs.redhat.com/ja/documentation/red_hat_build_of_keycloak/26.4/html-single/operator_guide/index#customizing-keycloak-red-hat-build-of-keycloak-custom-image-with-the-operator)
 
