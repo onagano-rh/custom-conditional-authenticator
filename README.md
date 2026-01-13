@@ -38,7 +38,7 @@ $KC_HOME/bin/kc.sh start-dev --log-level=com.example:all
 
 ```
 oc new-app --template=postgresql-persistent \
-   -p POSTGRESQL_VERSION=15-el9 \
+   -p POSTGRESQL_VERSION=latest \
    -p DATABASE_SERVICE_NAME=kcpostgres \
    -p POSTGRESQL_USER=kcusername \
    -p POSTGRESQL_PASSWORD=kcpassword \
