@@ -71,6 +71,19 @@ spec:
     headers: xforwarded
   hostname:
     hostname: keycloak-$(oc project -q).${CLUSTER_NAME}
+  additionalOptions:
+    - name: health-enabled
+      value: 'true'
+    - name: metrics-enabled
+      value: 'true'
+    - name: cache-metrics-histograms-enabled
+      value: 'true'
+    - name: http-metrics-histograms-enabled
+      value: 'true'
+    - name: event-metrics-user-enabled
+      value: 'true'
+    - name: event-metrics-user-events
+      value: 'login,logout'
   resources:
     requests:
       cpu: 2
@@ -81,6 +94,10 @@ spec:
 ```
 
 これを `oc apply` で適用するが、`spec.hostname.hostname` はプロジェクト名やOpenShiftクラスタ名にあわせること。
+
+デフォルトではメトリクスが有効にならない（RHBK Operator 26.4.10-opr.1 時点）ので `additionalOptions` のセクションに明示的に設定を与えて有効にしている。
+
+メトリクスが有効になるとServiceMonitorリソースが自動で作成され、OCPクラスタの設定でユーザーワークロードのモニタリングが有効であれば収集の対象になる。
 
 ## カスタムイメージのビルド
 
@@ -124,4 +141,7 @@ Keycloak CRのその他の設定は一部無視されるので注意する。
   - [ConditionalUserAttributeValue](https://github.com/keycloak/keycloak/blob/26.4.7/services/src/main/java/org/keycloak/authentication/authenticators/conditional/ConditionalUserAttributeValue.java)
 - [コミュニティ版のカスタムイメージ作成ガイド](https://www.keycloak.org/server/containers)
 - [RHBKのOperatorでカスタムイメージを使うための公式ドキュメント](https://docs.redhat.com/ja/documentation/red_hat_build_of_keycloak/26.4/html-single/operator_guide/index#customizing-keycloak-red-hat-build-of-keycloak-custom-image-with-the-operator)
+- [Operatorガイド, ServiceMonitor](https://docs.redhat.com/ja/documentation/red_hat_build_of_keycloak/26.4/html-single/operator_guide/index#advanced-configuration-servicemonitor)
+- [オブザーバビリティーガイド, Red Hat build of Keycloak 主要メトリクスのリスト](https://docs.redhat.com/ja/documentation/red_hat_build_of_keycloak/26.4/html-single/observability_guide/index#metrics-for-troubleshooting-list-of-red-hat-build-of-keycloak-key-metrics)
+- [OpenShift環境にGrafanaを導入する](https://qiita.com/hirokoji/items/90d0e9177e3c4cd97f57)
 

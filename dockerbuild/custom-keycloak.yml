@@ -20,6 +20,19 @@ spec:
     headers: xforwarded
   hostname:
     hostname: keycloak-$(oc project -q).${CLUSTER_NAME}
+  additionalOptions:
+    - name: health-enabled
+      value: 'true'
+    - name: metrics-enabled
+      value: 'true'
+    - name: cache-metrics-histograms-enabled
+      value: 'true'
+    - name: http-metrics-histograms-enabled
+      value: 'true'
+    - name: event-metrics-user-enabled
+      value: 'true'
+    - name: event-metrics-user-events
+      value: 'login,logout'
   resources:
     requests:
       cpu: 2
